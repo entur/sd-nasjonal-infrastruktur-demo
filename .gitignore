@@ -1,0 +1,6 @@
+*.pem
+.DS_Store
+.terraform
+*.tfstate
+*.tfstate.backup
+tmp_*

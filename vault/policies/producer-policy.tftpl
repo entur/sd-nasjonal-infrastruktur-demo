@@ -1,0 +1,5 @@
+# Administer
+path "secret/data/{{identity.entity.aliases.${mount_name}.name}}/*"
+{
+  capabilities = ["create", "update", "patch", "read", "delete"]
+}
