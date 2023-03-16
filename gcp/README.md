@@ -1,4 +1,20 @@
+# Bruk av workload identity federation med Maskinporten mot GCP
+
+
+
+- Login i gcloud `gcloud auth login`
+- Gjør klar for terraform
 ```
+export GOOGLE_PROJECT=<dittprosjekt>
+```
+- `terraform init` og `terraform apply`
+
+
+```
+SUBJECT_TOKEN_TYPE="urn:ietf:params:oauth:token-type:jwt"
+SUBJECT_TOKEN=<maskinportentoken>
+
+
 STS_TOKEN=$(curl https://sts.googleapis.com/v1/token \
     --data-urlencode "audience=//iam.googleapis.com/projects/207740593944/locations/global/workloadIdentityPools/test-maskinporten/providers/test-maskinporten" \
     --data-urlencode "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
@@ -8,8 +24,6 @@ STS_TOKEN=$(curl https://sts.googleapis.com/v1/token \
     --data-urlencode "subject_token=$SUBJECT_TOKEN" | jq -r .access_token)
 echo $STS_TOKEN
 
-SUBJECT_TOKEN_TYPE="urn:ietf:params:oauth:token-type:jwt"
-SUBJECT_TOKEN=<maskinportentoken>
 
 echo $STS_TOKEN > access_token.txt
 export CLOUDSDK_AUTH_ACCESS_TOKEN=$(cat access_token.txt)
