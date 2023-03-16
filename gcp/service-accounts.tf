@@ -3,3 +3,8 @@ resource "google_service_account" "consumer_scope_user" {
   description = "Example service account for scope entur:skyss.1 for orgno 917422575"
 }
 
+resource "google_project_iam_member" "workload_identity_sa" {
+  project = "ent-data-sdsharing-ext-dev"
+  role    = "roles/iam.workloadIdentityUser"
+  member  = "serviceAccount:${google_service_account.consumer_scope_user.email}"
+}
