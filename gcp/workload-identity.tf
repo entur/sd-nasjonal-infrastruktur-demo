@@ -10,6 +10,7 @@ resource "google_iam_workload_identity_pool_provider" "maskinporten" {
   attribute_mapping                  = {
           "attribute.maskinportenscope" = "assertion.scope"
           "google.subject"              = "assertion.consumer.ID"
+          "attribute.clientaccess"      = "\"client::\" + assertion.consumer.ID + \"::\" + assertion.scope"
         }
   display_name                       = "Test Maskinporten Provider"
   description                        = "OIDC identity pool provider for Maskinporten"
