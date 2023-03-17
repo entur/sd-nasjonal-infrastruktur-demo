@@ -12,7 +12,7 @@ export GOOGLE_PROJECT=<dittprosjekt>
 
 ```
 SUBJECT_TOKEN_TYPE="urn:ietf:params:oauth:token-type:jwt"
-SUBJECT_TOKEN=<maskinportentoken>
+SUBJECT_TOKEN=$(cat tmp_token_maskinporten.txt)
 PROVIDER_ID=<terraform-provider-id-output>
 
 
