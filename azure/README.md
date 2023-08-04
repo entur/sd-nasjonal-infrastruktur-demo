@@ -147,6 +147,31 @@ az storage file upload --account-name $STORAGE_ACC --share-name $STORAGE_SHARE -
 ## Logout
 
 ``````bash
+```
+# Contributor role for the service principal
+az role assignment create --role contributor --subscription $SUBSCRIPTION_ID --assignee-object-id $SERVICE_PRINCIPAL_ID --assignee-principal-type ServicePrincipal --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG
+
+# Blog access
+az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
+  --role "Storage Blob Data Contributor" \
+  --scope "/subscriptions/dddddddd-4444-3333-2222-aaaabbbbcccc/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/skyportentest"
+
+# Federated identities also need "Storage File Data Privileged..." roles
+az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
+  --role "Storage File Data Privileged Reader" \
+  --scope "/subscriptions/dddddddd-4444-3333-2222-aaaabbbbcccc/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/skyportentest"
+  
+# Reader might be enough, but I added this one too
+az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
+  --role "Storage File Data Privileged Contributor" \
+  --scope "/subscriptions/dddddddd-4444-3333-2222-aaaabbbbcccc/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/skyportentest"
+
+```
+
+## 7. Log in with Maskinporten credentials and download a file
+
+```
+# Logout from regular azure developer session, if active
 az logout
 ``````
 
