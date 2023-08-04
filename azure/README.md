@@ -135,7 +135,7 @@ az storage file upload --share-name $STORAGE_SHARE --account-name $STORAGE_ACC -
 
 ```
 # Contributor role for the service principal
-az role assignment create --role contributor --subscription $ SUBSCRIPTION_ID --assignee-object-id $SERVICE_PRINCIPAL_ID --assignee-principal-type ServicePrincipal --scope /subscriptions/$ SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG
+az role assignment create --role contributor --subscription $SUBSCRIPTION_ID --assignee-object-id $SERVICE_PRINCIPAL_ID --assignee-principal-type ServicePrincipal --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG
 
 # Blog access
 az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
