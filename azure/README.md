@@ -151,7 +151,7 @@ az storage file upload --account-name $STORAGE_ACC --share-name $STORAGE_SHARE -
 # Contributor role for the service principal
 az role assignment create --role contributor --subscription $SUBSCRIPTION_ID --assignee-object-id $SERVICE_PRINCIPAL_ID --assignee-principal-type ServicePrincipal --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG
 
-# Blog access
+# Blob access
 az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
   --role "Storage Blob Data Contributor" \
   --scope "/subscriptions/dddddddd-4444-3333-2222-aaaabbbbcccc/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/skyportentest"
