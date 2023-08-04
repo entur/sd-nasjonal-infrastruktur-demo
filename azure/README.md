@@ -154,17 +154,17 @@ az role assignment create --role contributor --subscription $SUBSCRIPTION_ID --a
 # Blob access
 az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
   --role "Storage Blob Data Contributor" \
-  --scope "/subscriptions/dddddddd-4444-3333-2222-aaaabbbbcccc/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/skyportentest"
+  --scope "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACC"
 
 # Federated identities also need "Storage File Data Privileged..." roles
 az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
   --role "Storage File Data Privileged Reader" \
-  --scope "/subscriptions/dddddddd-4444-3333-2222-aaaabbbbcccc/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/skyportentest"
+  --scope "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACC"
   
 # Reader might be enough, but I added this one too
 az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
   --role "Storage File Data Privileged Contributor" \
-  --scope "/subscriptions/dddddddd-4444-3333-2222-aaaabbbbcccc/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/skyportentest"
+  --scope "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACC"
 
 ```
 
