@@ -20,6 +20,35 @@ az login
 export AZURE_TENANT_ID="5e55abcd-dddd-4444-bbbb-4a4a4a4a4a4aa"
 ```
 
+## Define SUBSCRIPTION_ID
+
+Find the value of the subscription you want to work in and create objects in.
+
+List subscriptions:
+
+``````bash
+az account subscription list
+
+# Find the subscription id of the subscription you want to use
+az account subscription list
+[
+  {
+...
+    "displayName": "skyportentest",
+    "id": "/subscriptions/77777777-7777-7777-7777-777777777777",
+    "state": "Enabled",
+    "subscriptionId": "77777777-7777-7777-7777-777777777777",
+...
+  }
+]
+``````
+
+Export the subscription id:
+
+``````bash
+export SUBSCRIPTION_ID="77777777-7777-7777-7777-777777777777"
+``````
+
 ## Create a resource group, storage account and storage share
 
 ``````bash
