@@ -182,7 +182,7 @@ az login --service-principal -u $IDENTITY_CLIENT_ID -t $AZURE_TENANT_ID --federa
 AADSTS70021: No matching federated identity record found for presented assertion. Assertion Issuer: 'https://sky.maskinporten.dev/'. Assertion Subject: '0192:917422575'. Assertion Audience: 'https://sky.foo.com'.
 ``````
 
-Recreate the credential with trailing slash.
+The issuer must exactly match the issuer in the credential. Update or recreate the credential with trailing slash in the issuer.
 
 
 ### Token timeout error (as expected since token has timed out)
