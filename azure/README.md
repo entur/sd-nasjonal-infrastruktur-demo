@@ -45,7 +45,7 @@ credential.json should contain this:
 ``````json
 {
     "name": "oidcpilotcreds",
-    "issuer": "https://maskinporten.dev/",
+    "issuer": "https://sky.maskinporten.dev/",
     "subject": "0192:999999999",
     "description": "Testing skyporten",
     "audiences": [
