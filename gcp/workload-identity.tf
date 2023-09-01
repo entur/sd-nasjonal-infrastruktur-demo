@@ -17,7 +17,7 @@ resource "google_iam_workload_identity_pool_provider" "maskinporten" {
   oidc {
     allowed_audiences = ["https://entur.org",
               "https://hoc-cluster-public-vault-e58f231b.dada9b17.z1.hashicorp.cloud"]
-    issuer_uri        = "https://test.maskinporten.no/"
+    issuer_uri        = "https://sky.maskinporten.dev/"
   }
 
 }

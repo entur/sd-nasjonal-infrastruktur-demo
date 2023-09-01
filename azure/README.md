@@ -41,12 +41,30 @@ az account subscription list
 ...
   }
 ]
-``````
+```
 
 Export the subscription id:
 
 ``````bash
 export SUBSCRIPTION_ID="77777777-7777-7777-7777-777777777777"
+``````
+
+### Add federated credentials
+
+#### Create credential.json
+
+credential.json should contain this:
+
+``````json
+{
+    "name": "oidcpilotcreds",
+    "issuer": "https://sky.maskinporten.dev/",
+    "subject": "0192:999999999",
+    "description": "Testing skyporten",
+    "audiences": [
+        "https://sky.organisasjonsnavn.no"
+    ]
+}
 ``````
 
 ## Create a resource group, storage account and storage share
