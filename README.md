@@ -17,7 +17,7 @@ Dette repoet POC'er noen alternativer
 
 ### Maskinporten som IDP direkte mot skyleverandør
 
-Maskinporten kan brukes som ekstern IDP for skylever [eksemplifisert med GCP](gcp/README.md)
+Maskinporten kan brukes som ekstern IDP for skyleverandører [eksemplifisert med GCP](gcp/README.md) og [Azure](azure/README.md)
 
 ### Maskinporten foran et felles driftet hemmelighetslager
 
