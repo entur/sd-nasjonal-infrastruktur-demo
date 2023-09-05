@@ -41,12 +41,30 @@ az account subscription list
 ...
   }
 ]
-``````
+```
 
 Export the subscription id:
 
 ``````bash
 export SUBSCRIPTION_ID="77777777-7777-7777-7777-777777777777"
+``````
+
+### Add federated credentials
+
+#### Create credential.json
+
+credential.json should contain this:
+
+``````json
+{
+    "name": "oidcpilotcreds",
+    "issuer": "https://sky.maskinporten.dev/",
+    "subject": "0192:999999999",
+    "description": "Testing skyporten",
+    "audiences": [
+        "https://sky.organisasjonsnavn.no"
+    ]
+}
 ``````
 
 ## Create a resource group, storage account and storage share
@@ -147,6 +165,31 @@ az storage file upload --account-name $STORAGE_ACC --share-name $STORAGE_SHARE -
 ## Logout
 
 ``````bash
+```
+# Contributor role for the service principal
+az role assignment create --role contributor --subscription $SUBSCRIPTION_ID --assignee-object-id $SERVICE_PRINCIPAL_ID --assignee-principal-type ServicePrincipal --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG
+
+# Blob access
+az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
+  --role "Storage Blob Data Contributor" \
+  --scope "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACC"
+
+# Federated identities also need "Storage File Data Privileged..." roles
+az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
+  --role "Storage File Data Privileged Reader" \
+  --scope "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACC"
+  
+# Reader might be enough, but I added this one too
+az role assignment create --assignee "$SERVICE_PRINCIPAL_ID" \
+  --role "Storage File Data Privileged Contributor" \
+  --scope "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$STORAGE_RG/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACC"
+
+```
+
+## 7. Log in with Maskinporten credentials and download a file
+
+```
+# Logout from regular azure developer session, if active
 az logout
 ``````
 
