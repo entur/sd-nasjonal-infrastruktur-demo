@@ -128,12 +128,10 @@ resource "google_service_account_iam_policy" "foo" {
 ```
 export SUBJECT_TOKEN_TYPE="urn:ietf:params:oauth:token-type:jwt"
 export SUBJECT_TOKEN=`cat tmp_maskinporten_access_token.json | jq -r .access_token`
-export PROVIDER_NAME=projects/207740593944/locations/global/workloadIdentityPools/skyportenpoc/providers/skyportenprovider
-export AUDIENCE_ID=projects/207740593944/locations/global/workloadIdentityPools/skyportenpoc/providers/skyportenprovider
-export AUDIENCE_ID="//iam.googleapis.com/$PROVIDER_ID/"
-export AUDIENCE_ID="//iam.googleapis.com/$PROVIDER_NAME"
+export AUDIENCE_ID="//iam.googleapis.com/projects/${PROJNUM}/locations/global/workloadIdentityPools/$WORKLOAD_POOL_ID/providers/${PROVIDER_ID}"
 echo "AUDIENCE_ID: $AUDIENCE_ID"
 
+export SUBJECT_TOKEN=`cat tmp_maskinporten_access_token.json | jq -r .access_token`
 curl https://sts.googleapis.com/v1/token \
     --data-urlencode "audience=$AUDIENCE_ID" \
     --data-urlencode "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
