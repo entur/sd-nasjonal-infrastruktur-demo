@@ -22,19 +22,19 @@ gcloud config set project "$GOOGLE_PROJECT"
 ### Create a new workload identity pool
 
 ```
-export WORKLOAD_POOL_ID=skyportenpoc2
+export WORKLOAD_POOL_ID=skyportenpoc
 
 gcloud iam workload-identity-pools create "$WORKLOAD_POOL_ID" \
     --location="global" \
     --description="pool for skyporten poc" \
-    --display-name="skyportenpoc try2"
+    --display-name="skyportenpoc try"
 ```
 
 ### Define oidc identity pool provider
 
 ```
 export ENTUR_AUDIENCE="https://entur.org"
-export PROVIDER_ID=skyportenprovider2
+export PROVIDER_ID=skyportenprovider
 
 gcloud iam workload-identity-pools providers create-oidc $PROVIDER_ID \
     --location="global" \
@@ -80,7 +80,7 @@ export PROJNUM=[ number ]
 ```
 export MASKINPORTENCLIENTID="0192:917422575"
 export MASKINPORTENSCOPE="entur:skyss.1"
-export SERVICE_ACC='skyportenstorageconsumer2'
+export SERVICE_ACC='skyportenstorageconsumer'
 gcloud iam service-accounts create $SERVICE_ACC \
     --description="Skyporten storage consumer" \
     --display-name="skyportenstoragesa"
@@ -125,14 +125,14 @@ export PROVIDER_FULL_IDENTIFIER=projects/${PROJNUM}/locations/global/workloadIde
 
 gcloud iam workload-identity-pools create-cred-config $PROVIDER_FULL_IDENTIFIER --service-account=$SAEMAIL --credential-source-file=$MASKINPORTEN_TOKEN_FILE --output-file=credentials.json
 gcloud auth login --cred-file=credentials.json
-Authenticated with external account credentials for: [skyportenstorageconsumer@external-test-369712.iam.gserviceaccount.com].
-Your current project is [external-test-369712]
+Authenticated with external account credentials for: [skyportenstorageconsumer@external-test-foo-333333.iam.gserviceaccount.com].
+Your current project is [external-test-foo-333333]
 
 gcloud storage ls gs://$BUCKET 
-gs://skyportenbucket-tine/foo_remote.txt
+gs://[bucket name]/foo_remote.txt
 
 gcloud storage cp gs://$BUCKET/foo_remote.txt foo_local.txt 
-Copying gs://skyportenbucket-tine/foo_remote.txt to file://foo_local.txt
+Copying gs://[bucket name]/foo_remote.txt to file://foo_local.txt
   Completed files 1/1 | 4.0B/4.0B    
 
 ```
