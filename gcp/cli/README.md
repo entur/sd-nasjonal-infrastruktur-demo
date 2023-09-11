@@ -23,10 +23,11 @@ gcloud config set project "$GOOGLE_PROJECT"
 
 ```
 export WORKLOAD_POOL_ID=skyportenpoc
+
 gcloud iam workload-identity-pools create "$WORKLOAD_POOL_ID" \
     --location="global" \
     --description="pool for skyporten poc" \
-    --display-name="skyportenpoc"
+    --display-name="skyportenpoc try"
 ```
 
 ### Define oidc identity pool provider
@@ -34,6 +35,7 @@ gcloud iam workload-identity-pools create "$WORKLOAD_POOL_ID" \
 ```
 export ENTUR_AUDIENCE="https://entur.org"
 export PROVIDER_ID=skyportenprovider
+
 gcloud iam workload-identity-pools providers create-oidc $PROVIDER_ID \
     --location="global" \
     --workload-identity-pool=$WORKLOAD_POOL_ID \
@@ -47,7 +49,7 @@ gcloud iam workload-identity-pools providers create-oidc $PROVIDER_ID \
 ### Create storage bucket
 
 ```
-export BUCKET="skyportenbucket"
+export BUCKET="skyportenbucket2"
 gcloud storage buckets create gs://$BUCKET --location="EUROPE-WEST4"
 ```
 
@@ -97,69 +99,40 @@ export SAEMAIL="skyportenstorageconsumer@ent-data-sdsharing-ext-dev.iam.gservice
 
 
 #### Create policy binding
-```
-gcloud iam service-accounts add-iam-policy-binding $SAEMAIL \
-    --member="principalSet://iam.googleapis.com/projects/$PROJNUM/locations/global/workloadIdentityPools/$WORKLOAD_POOL_ID/attribute.clientaccess/client::$MASKINPORTENCLIENTID::$MASKINPORTENSCOPE" \
-    --role="roles/viewer"
-```
 
+```
 gcloud iam service-accounts add-iam-policy-binding $SAEMAIL \
     --member="principalSet://iam.googleapis.com/projects/$PROJNUM/locations/global/workloadIdentityPools/$WORKLOAD_POOL_ID/attribute.clientaccess/client::$MASKINPORTENCLIENTID::$MASKINPORTENSCOPE" \
     --role="roles/iam.workloadIdentityUser"
-
-
-gcloud projects add-iam-policy-binding $GOOGLE_PROJECT \
---member='serviceAccount:$SAEMAIL' \
---role="roles/storage.objectViewer"
-
-
-
-
-#### Create policy
-
-resource "google_service_account_iam_policy" "foo" {
-  service_account_id = google_service_account.consumer_scope_user.name
-  policy_data        = data.google_iam_policy.clientaccess.policy_data
-}
-
-
-## Login with STS token
-
-```
-export SUBJECT_TOKEN_TYPE="urn:ietf:params:oauth:token-type:jwt"
-export SUBJECT_TOKEN=`cat tmp_maskinporten_access_token.json | jq -r .access_token`
-export AUDIENCE_ID="//iam.googleapis.com/projects/${PROJNUM}/locations/global/workloadIdentityPools/$WORKLOAD_POOL_ID/providers/${PROVIDER_ID}"
-echo "AUDIENCE_ID: $AUDIENCE_ID"
-
-export SUBJECT_TOKEN=`cat tmp_maskinporten_access_token.json | jq -r .access_token`
-curl https://sts.googleapis.com/v1/token \
-    --data-urlencode "audience=$AUDIENCE_ID" \
-    --data-urlencode "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
-    --data-urlencode "requested_token_type=urn:ietf:params:oauth:token-type:access_token" \
-    --data-urlencode "scope=https://www.googleapis.com/auth/cloud-platform" \
-    --data-urlencode "subject_token_type=$SUBJECT_TOKEN_TYPE" \
-    --data-urlencode "subject_token=$SUBJECT_TOKEN" > tmp_sts_access_token.txt
-    
-export STS_TOKEN=$(curl https://sts.googleapis.com/v1/token \
-    --data-urlencode "audience=$AUDIENCE_ID" \
-    --data-urlencode "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
-    --data-urlencode "requested_token_type=urn:ietf:params:oauth:token-type:access_token" \
-    --data-urlencode "scope=https://www.googleapis.com/auth/cloud-platform" \
-    --data-urlencode "subject_token_type=$SUBJECT_TOKEN_TYPE" \
-    --data-urlencode "subject_token=$SUBJECT_TOKEN" | jq -r .access_token)
-echo $STS_TOKEN
 ```
 
-#### TODO
+```
+gcloud storage buckets add-iam-policy-binding gs://$BUCKET --member=serviceAccount:$SAEMAIL --role=roles/storage.objectViewer
 
+```
 
-gcloud storage ls gs://$BUCKET --access-token-file=tmp_sts_access_token.txt
+#### Authentication using maskinporten
 
-gcloud auth login --access-token-file=tmp_sts_access_token.txt
+Logout
+`gcloud auth revoke`
 
---access-token-file=tmp_sts_access_token.txt
+Foventer å finne maskinporten-token i full json i `tmp_maskinporten_access_token.json`
 
-gcloud auth login --cred-file=/path/to/workload/identity/config/file.
+```
+export MASKINPORTEN_TOKEN_FILE=tmp_maskinporten_token.txt 
+cat tmp_maskinporten_access_token.json | jq -r .access_token > $MASKINPORTEN_TOKEN_FILE
+export PROVIDER_FULL_IDENTIFIER=projects/${PROJNUM}/locations/global/workloadIdentityPools/$WORKLOAD_POOL_ID/providers/${PROVIDER_ID}
 
+gcloud iam workload-identity-pools create-cred-config $PROVIDER_FULL_IDENTIFIER --service-account=$SAEMAIL --credential-source-file=$MASKINPORTEN_TOKEN_FILE --output-file=credentials.json
+gcloud auth login --cred-file=credentials.json
+Authenticated with external account credentials for: [skyportenstorageconsumer@external-test-foo-333333.iam.gserviceaccount.com].
+Your current project is [external-test-foo-333333]
 
-gcloud storage ls gs://$BUCKET
+gcloud storage ls gs://$BUCKET 
+gs://[bucket name]/foo_remote.txt
+
+gcloud storage cp gs://$BUCKET/foo_remote.txt foo_local.txt 
+Copying gs://[bucket name]/foo_remote.txt to file://foo_local.txt
+  Completed files 1/1 | 4.0B/4.0B    
+
+```
