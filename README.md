@@ -19,6 +19,6 @@ Dette repoet POC'er noen alternativer
 
 Maskinporten kan brukes som ekstern IDP for skyleverandører [eksemplifisert med GCP](gcp/README.md) og [Azure](azure/README.md)
 
-### Maskinporten foran et felles driftet hemmelighetslager
+### DEPRECATED: Maskinporten foran et felles driftet hemmelighetslager
 
 Maskinportentokens kan utveksles i leverandør/organisasjonsspesifikke hemmeligheter. Eksempelet bruker Maskinportenscopes foran [Hashicorp Vault](vault/README.md), som gir mulighet til lese og skriverettigheter kun basert på scopet i Maskinporten.
