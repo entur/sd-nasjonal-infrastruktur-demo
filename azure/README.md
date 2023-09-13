@@ -202,6 +202,27 @@ See [token instructions](/token.md) on how to generate a token.
 export SKYPORTEN_TOKEN="aaaaa....bbbbbb"
 ``````
 
+The unpacked token will look something like this:
+
+``````json
+{
+  "aud": "https://entur.org",
+  "sub": "0192:917422575",
+  "scope": "entur:foo.1",
+  "iss": "https://sky.maskinporten.dev/",
+  "client_amr": "private_key_jwt",
+  "token_type": "Bearer",
+  "exp": 1694222211,
+  "iat": 1694333311,
+  "client_id": "abcd1234-1234-abcd-abcd-12341234abcd",
+  "jti": "lwlwlwlw4lwlwlwlwl4lwlw4-lw-lwl4lwl4lwl4lwl4",
+  "consumer": {
+    "authority": "iso6523-actorid-upis",
+    "ID": "0192:917422575"
+  }
+}
+``````
+
 ## Login with the federated credentials and download a file, to test access
 
 ``````bash
