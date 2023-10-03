@@ -1,3 +1,7 @@
+# Flyttemelding
+
+Dette prosjektet er arkivert har flyttet fra noe Tverrsektorielt datasamarbied gjør alene til et samarbeid med Digitaliseringsdirektoratet. I sin nye form kan eksempler, utvidelser og dokumentasjon finnes på https://github.com/felleslosninger/skyporten-examples.
+
 # POCer på bruk av nasjonal infrastruktur som identitetsløsning
 
 Dette repoet POCer noen alternative måter å bruke Maskinporten kan brukes som ekstern IDP for skyleverandører [eksemplifisert med GCP](gcp/README.md) og [Azure](azure/README.md)
